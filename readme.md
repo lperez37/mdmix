@@ -2,7 +2,7 @@
 
 ![MDMix Sample](sample.png)
 
-A Python utility that combines multiple Markdown files into a single document with an automatically generated table of contents.
+A Python utility that combines multiple Markdown files into a single document with an automatically generated table of contents. Inspired by repomix.
 
 ## Features
 
@@ -150,6 +150,7 @@ Content of the second document...
 
 ## Use Cases
 
+- LLM ingestion for AI agents, agentic workflows and chatbots
 - Combining project documentation
 - Creating a single reference document from multiple notes
 - Preparing Markdown content for export to other formats
