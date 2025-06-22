@@ -93,6 +93,21 @@ To see all available options:
 mdmix --help
 ```
 
+### Visual Features
+
+MDMix includes colorful terminal output to enhance the user experience:
+
+- **ASCII Art Banner** - Eye-catching startup display
+- **Progress Indicators** - Real-time feedback during file processing
+- **Color-coded Messages** - Success, warning, and error messages with appropriate colors
+- **File Processing Display** - Shows each file being processed with visual feedback
+
+To disable the banner (for scripting purposes):
+
+```bash
+mdmix --no-banner
+```
+
 ## Output Format
 
 The generated file includes:
