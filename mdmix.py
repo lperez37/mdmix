@@ -42,22 +42,30 @@ def process_files(directory, recursive=False):
     for i, file_path in enumerate(files, 1):
         rel_path = os.path.relpath(file_path, directory)
         title = extract_title(file_path)
-
-        # Add to TOC
-        toc += f"{i}. [{title}](#{rel_path.replace('/', '-').replace(' ', '-').replace('.md', '')})\n"
+        
+        # Create a clean anchor ID while preserving path structure
+        anchor_id = rel_path.replace('/', '-').replace(' ', '-').replace('.md', '').lower()
+        
+        # Add to TOC with relative path information
+        toc += f"{i}. [{title}](#{anchor_id}) - `{rel_path}`\n"
 
         # Read file content
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
         # Add file to combined content with document tags
-        combined_content += f"\n\n<document id=\"{rel_path.replace('/', '-').replace(' ', '-').replace('.md', '')}\">\n"
+        combined_content += f"\n\n<document id=\"{anchor_id}\" source=\"{rel_path}\">\n"
         combined_content += f"## File: {rel_path}\n\n"
 
-        # Add folder tags if in subdirectory
-        if os.path.dirname(rel_path) and recursive:
+        # Add folder tags if in subdirectory (always show folder info for clarity)
+        if os.path.dirname(rel_path):
             folder_path = os.path.dirname(rel_path)
-            combined_content += f"<folder>{folder_path}</folder>\n\n"
+            combined_content += f"<folder>{folder_path}</folder>\n"
+            combined_content += f"**Directory:** `{folder_path}`\n"
+            combined_content += f"**Full Path:** `{rel_path}`\n\n"
+        else:
+            combined_content += f"**Directory:** `./` (root)\n"
+            combined_content += f"**Full Path:** `{rel_path}`\n\n"
 
         combined_content += content
         combined_content += "\n</document>\n"
@@ -66,8 +74,15 @@ def process_files(directory, recursive=False):
     return toc + combined_content
 
 def main():
-    parser = argparse.ArgumentParser(description='Combine markdown files with table of contents')
-    parser.add_argument('-r', '--recursive', action='store_true', help='Process subdirectories recursively')
+    parser = argparse.ArgumentParser(
+        description='Combine markdown files with table of contents',
+        epilog='Examples:\n'
+               '  mdmix           # Combine .md files in current directory\n'
+               '  mdmix -r        # Combine .md files recursively\n',
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument('-r', '--recursive', action='store_true',
+                       help='Process subdirectories recursively')
     args = parser.parse_args()
 
     current_dir = os.getcwd()
