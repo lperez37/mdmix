@@ -1,5 +1,7 @@
 # MDMix - Markdown File Combiner
 
+![MDMix Sample](sample.png)
+
 A Python utility that combines multiple Markdown files into a single document with an automatically generated table of contents.
 
 ## Features
